@@ -198,7 +198,9 @@ Specifically, as an alternative to using this hook, you can just disable the cor
 ```json
 {
   "hooks": {
-    "orm": false
+    "orm": false,
+    "pubsub": false,
+    "blueprints": false
   }
 }
 ```
