@@ -206,6 +206,11 @@ This hook uses the following properties on `sails.config`:
 This repo contains an override for the core `orm` hook.  It replaces built-in Waterline support with some basic affordances for using Mongoose with Sails.
 
 
+#### Is there an example app somewhere?
+
+[You bet](https://github.com/mikermcneil/orm-hook-override-example)!
+
+
 #### If I want to use Mongoose, do I _have_ to use this hook?
 
 No way!  First of all, you can _always_ use any NPM package you like in your Sails app, regardless of what hooks are installed (just `require()` the module like you would from any Node app).
