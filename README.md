@@ -21,7 +21,23 @@ The source code in this repo sets up conventions for how to go about:
 
 ## Installation
 
-> TODO
+From your Sails app:
+
+```bash
+npm install sails-hook-orm-mongoose --save
+```
+
+That's it!.... almost.  For the time being, you also need to disable the ORM hook.  To do so, merge the following into your `.sailsrc` file:
+
+```json
+{
+  "hooks": {
+    "orm": false,
+    "pubsub": false,
+    "blueprints": false
+  }
+}
+```
 
 
 ## Compatibility
