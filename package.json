@@ -27,5 +27,8 @@
   "dependencies": {
     "lodash": "^4.0.0",
     "mongoose": "^4.3.6"
+  },
+  "sails": {
+    "isHook": true
   }
 }
