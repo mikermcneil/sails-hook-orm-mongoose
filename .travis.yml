@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "0.10"
+  - "0.12"
+  - "iojs-v1"
+  - "iojs-v2"
+before_script: sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'secret'
