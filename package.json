@@ -1,0 +1,27 @@
+{
+  "name": "sails-hook-orm-mongoose",
+  "version": "0.1.0",
+  "description": "An example override for the `orm` hook in Sails.  Loads and instantiates your model files as Mongoose models instead of Waterline models.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikermcneil/sails-hook-orm-mongoose.git"
+  },
+  "keywords": [
+    "sails",
+    "mongoose",
+    "orm",
+    "override",
+    "hook",
+    "orm-hook"
+  ],
+  "author": "Mike McNeil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikermcneil/sails-hook-orm-mongoose/issues"
+  },
+  "homepage": "https://github.com/mikermcneil/sails-hook-orm-mongoose#readme"
+}
