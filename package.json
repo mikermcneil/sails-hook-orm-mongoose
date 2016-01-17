@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/mikermcneil/sails-hook-orm-mongoose/issues"
   },
-  "homepage": "https://github.com/mikermcneil/sails-hook-orm-mongoose#readme"
+  "homepage": "https://github.com/mikermcneil/sails-hook-orm-mongoose#readme",
+  "dependencies": {
+    "lodash": "^4.0.0",
+    "mongoose": "^4.3.6"
+  }
 }

@@ -3,7 +3,6 @@
  */
 
 var _ = require('lodash');
-var async = require('async');
 var mongoose = require('mongoose');
 
 
@@ -110,24 +109,74 @@ module.exports = function (sails) {
       sails.modules.loadModels(function modulesLoaded(err, modules) {
         if (err) return cb(err);
 
-        // Instantiate models and expose references to them as `sails.models.*`.
-        // (i.e. `sails.models[identity]`)
-        sails.models = modules;
+        try {
 
-        console.log(modules);
+          // Instantiate Mongoose schemas for each model definition (running custom `constructSchema` functions if provided)
+          var schemas = _.reduce(modules, function (memo, def, identity) {
 
-        // If configured to do so, also expose instantiated models as global variables.
-        // (using `globalId` to expose these models process-wide)
-        if ( _.isObject(sails.config.globals) && sails.config.globals.models ) {
-          _.each(sails.models, function eachInstantiatedModel(Model, identity) {
-            // Ensure a `globalId` exists (if not, make one up)...
-            sails.models[modelId].globalId = sails.models[modelId].globalId || _.capitalize(sails.models[modelId].identity);
-            // Then expose the Model as a global variable.
-            global[globalId] = Model;
-          });
+            // Validate `schema` from model def (if omitted, default it to `{}`)
+            if ( _.isUndefined(def.schema) ){
+              def.schema = {};
+            }
+            if ( !_.isObject(def.schema) || _.isArray(def.schema) ) {
+              throw new Error('Invalid `schema` provided in model (`'+identity+'`).  If provided, `schema` must be a dictionary.');
+            }
+
+            // If no `constructSchema` interceptor function was provided, just new up a Mongoose Schema by passing in `schema` from the model def.
+            if ( _.isUndefined(def.constructSchema) ) {
+              memo[identity] = new sails.mongoose.Schema(def.schema);
+            }
+            // If `constructSchema` interceptor function WAS provided, run it to get the Schema instance.
+            else if ( _.isFunction(def.constructSchema) ) {
+              try {
+                memo[identity] = def.constructSchema(def.schema, sails);
+              }
+              catch (e) {
+                e.message = 'Encountered an error when running `constructSchema` interceptor provided for model (`'+identity+'`). Details:\n' + e.message;
+                e.stack = 'Encountered an error when running `constructSchema` interceptor provided for model (`'+identity+'`). Details:\n' + e.stack;
+                throw e;
+              }
+            }
+            else {
+              throw new Error('Invalid `constructSchema` interceptor provided in model (`'+identity+'`).  If provided, `constructSchema` must be a function.');
+            }
+
+
+            return memo;
+          }, {});
+
+          // Now generate Model constructors from those schemas
+          // and expose references to them as `sails.models[identity]`.
+          sails.models = _.reduce(schemas, function (memo, mongooseSchemaInstance, identity) {
+            memo[identity] = sails.mongoose.model(identity, mongooseSchemaInstance);
+            return memo;
+          }, {});
+
+
+          // If configured to do so, also expose instantiated models as global variables.
+          // (using `globalId` to expose these models process-wide)
+          if ( _.isObject(sails.config.globals) && sails.config.globals.models ) {
+            _.each(sails.models, function eachInstantiatedModel(Model, identity) {
+              // Set `globalId` directly on the Mongoose model
+              Model.globalId = modules[identity].globalId;
+
+              // TODO: figure out if we actually need this inference...
+              // (if no globalId exists, then make one up)...
+              // sails.models[modelId].globalId = sails.models[modelId].globalId || _.capitalize(sails.models[modelId].identity);
+
+              // Then expose the Model as a global variable.
+              global[globalId] = Model;
+            });
+          }
+
+          // Finally, trigger `initialize`'s callback.  We're done!
+          return cb();
+
         }
-
-        return cb();
+        // If anything unexpected happened, pass the error to `initialize`'s callback.
+        catch (e) {
+          return cb(e);
+        }
       });
 
 
