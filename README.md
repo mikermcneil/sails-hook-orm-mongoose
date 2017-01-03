@@ -231,7 +231,7 @@ Specifically, as an alternative to using this hook, you can just disable the cor
 
 This is an example of how to override the ORM hook.  If you would like to extend it, tweak the way it is configured, or otherwise change it in any way, go for it!  Just fork this repo and bring it into your project as an app-level hook `api/hooks/orm/` or maintain it as a separate package and develop it alongside your app with `npm link`.
 
-If you have a version of this hook that you are maintaining and using in production, and you think it would be helpful to others, then please first ensure that you've written some tests and (even more important) complete documentation of how to install and use it in a brand new project.  Then if you [publish your hook](http://sailsjs.org/documentation/concepts/extending-sails/hooks/installable-hooks#?publishing-your-hook) on NPM and contact someone on the [Sails core team](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#viii-core-maintainers), we will help ensure the rest of the Sails community hears about it.
+If you have a version of this hook that you are maintaining and using in production, and you think it would be helpful to others, then please first ensure that you've written some tests and (even more important) complete documentation of how to install and use it in a brand new project.  Then if you [publish your hook](http://sailsjs.org/documentation/concepts/extending-sails/hooks/installable-hooks#?publishing-your-hook) on NPM and [contact](http://sailsjs.com/contact) someone on the [Sails core team](http://sailsjs.com/about), we will help ensure the rest of the Sails community hears about it.
 
 
 
